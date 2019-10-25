@@ -54,54 +54,6 @@ def process_live_data(original_df):
     df.drop(columns=["acq_date", "acq_time", "timestamp"], inplace=True)
 
     return df
-
-# def add_training_data(df, db):
-#     print('adding training data')
-
-#     # Add data from df into array
-#     for row in df.values:
-#         data = Modis(
-#             latitude = row[0],
-#             longitude = row[1],
-#             brightness = row[2],
-#             scan = row[3],
-#             track = row[4],
-#             satellite = row[5],
-#             confidence = row[6],
-#             version = row[7],
-#             bright_t31 = row[8],
-#             frp = row[9],
-#             daynight = row[10],
-#             timestamp = row[11],
-#             month = row[12],
-#             week = row[13]
-#         )
-
-#         # add to db
-#         db.session.add(data)
-
-#     # commit
-#     db.session.commit()
-    
-
-def get_lon():
-    pass
-
-def get_lat():
-    pass
-
-def get_firms():
-    lance_firms_url = 'https://nrt4.modaps.eosdis.nasa.gov/api/v2/content/archives/FIRMS'
-    lance_firms_wget = f'wget -e robots=off -m -np -R .html,.tmp -nH --cut-dirs=4 "{lance_firms_url}" --header "Authorization: Bearer {nasa_lance_token}" -P ../../'
-    return os.system(lance_firms_wget)
-
-def get_weather(lon, lat):
-    open_weather_url = f'api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon} '
-    response = requests.get(open_weather_url)
-    if response.status_code == 200:
-        return json.loads(response.content.decode('utf-8'))
-    else:
-        return None
     
     
 # prob need a function to check if  user input is within an already checked radius
@@ -122,6 +74,18 @@ def haversine(lon1, lat1, lon2, lat2):
     c = 2 * asin(sqrt(a))
     r = 3956  # radius of earth in miles mean of  poles and equator radius
     return c * r
+
+
+# Function to pull all fires
+def fires_list():
+    url = 'https://inciweb.nwcg.gov/feeds/rss/incidents/'
+    fires = feedparser.parse(url)
+    rss_fires = []
+    for entry in fires.entries:
+    # Return a dict for each fire with name and location
+        fire_dict = {'name': entry.title, 'location': entry.where.coordinates}
+        rss_fires.append(fire_dict)
+    return rss_fires
 
 
 ## Notes 

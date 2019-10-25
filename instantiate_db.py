@@ -42,7 +42,8 @@ frp FLOAT,
 daynight VARCHAR(7),
 timestamp VARCHAR(50),
 month INT,
-week INT
+week INT,
+fire INT
 );
 """
 

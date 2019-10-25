@@ -5,6 +5,7 @@ import psycopg2
 from functions import (
     pull_modis, 
     process_live_data, 
+    label_fires
     haversine
 )
 
@@ -12,9 +13,10 @@ from functions import (
 import pandas as pd
 
 
-# Get MODIS Data
+# Get MODIS Data and label it
 dirty_df = pull_modis()
 df = process_live_data(dirty_df)
+labelled_df = label_fires(df)
 
 
 # Credentials
@@ -46,7 +48,7 @@ for row in rows:
     INSERT INTO training
     (latitude, longitude, brightness, scan, track,
      satellite, confidence, version, bright_t31, frp,
-     daynight, month, week)
+     daynight, month, week, fire)
     VALUES 
     """ + str(row) + ';'
     
