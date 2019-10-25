@@ -5,12 +5,13 @@ import psycopg2
 from functions import (
     pull_modis, 
     process_live_data, 
-    label_fires
+    label_fires,
     haversine
 )
 
 # DS Logic imports
 import pandas as pd
+import feedparser
 
 
 # Get MODIS Data and label it
@@ -22,7 +23,7 @@ labelled_df = label_fires(df)
 # Credentials
 dbname = 'polpmmvo'
 user = 'polpmmvo'
-password = '' # Don't commit this!
+password = 'bFk96iZpUbOZwFCDIqK1JaU4e92C5xDx' # Don't commit this!
 host = 'salt.db.elephantsql.com'
 
 # Establish connection
@@ -34,7 +35,8 @@ pg_curs = pg_conn.cursor()
 
 
 # Send data to db
-dirty_rows = df.values
+print('cleaning data')
+dirty_rows = labelled_df.values
 
 # Clean up rows
 rows = []
@@ -42,6 +44,7 @@ rows = []
 for row in dirty_rows:
     rows.append(tuple(row))
 
+print('adding data to DB')
 # Loop over the array to write rows in the DB
 for row in rows:
     insert = """
@@ -57,3 +60,5 @@ for row in rows:
 # Save and finish session
 pg_curs.close()
 pg_conn.commit()
+
+print('all done!')

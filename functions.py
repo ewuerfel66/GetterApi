@@ -16,6 +16,7 @@ open_weather_token = ''
 import pandas as pd
 import numpy as np
 from math import radians, cos, sin, asin, sqrt
+import feedparser
 
 
 # Functions 
@@ -86,6 +87,42 @@ def fires_list():
         fire_dict = {'name': entry.title, 'location': entry.where.coordinates}
         rss_fires.append(fire_dict)
     return rss_fires
+
+
+def label_fires(df):
+    print('labelling data')
+    # Instantiate labels list
+    labels = []
+    
+    # Get lats and lons from df
+    lats = df['latitude'].tolist()
+    lons = df['longitude'].tolist()
+    
+    # Pull confirmed fires
+    fires = fires_list()
+    locations = [entry['location'] for entry in fires]
+    
+    # loop data points
+    for n in range(len(lats)):
+        # loop fires
+        for fire in locations:
+            distance = haversine(lons[n], lats[n], fire[1], fire[0])
+            label = 0
+            if distance < 0.3:
+                label = 1
+                labels.append(label)
+                break
+            else:
+                pass
+
+        if label != 1:
+            labels.append(label)
+            
+    # append labels to df
+    labelled_df = df.copy()
+    labelled_df['labels'] = labels
+    
+    return labelled_df
 
 
 ## Notes 
