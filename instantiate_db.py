@@ -15,7 +15,7 @@ import pandas as pd
 # Credentials
 dbname = 'polpmmvo'
 user = 'polpmmvo'
-password = 'bFk96iZpUbOZwFCDIqK1JaU4e92C5xDx' # Don't commit this!
+password = '' # Don't commit this!
 host = 'salt.db.elephantsql.com'
 
 # Establish connection
@@ -48,8 +48,11 @@ fire INT
 """
 
 # Execute table creation
+print('creating db')
 pg_curs.execute(create_training_table)
 
 # Save and finish session
 pg_curs.close()
 pg_conn.commit()
+
+print('all done!')
