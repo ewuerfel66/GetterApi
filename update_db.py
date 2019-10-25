@@ -51,7 +51,8 @@ for row in rows:
     INSERT INTO training
     (latitude, longitude, brightness, scan, track,
      satellite, confidence, version, bright_t31, frp,
-     daynight, month, week, fire)
+     daynight, month, week, temperature, humidity, windspeed,
+     fire)
     VALUES 
     """ + str(row) + ';'
     
