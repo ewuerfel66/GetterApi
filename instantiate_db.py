@@ -13,8 +13,8 @@ import pandas as pd
 
 
 # Credentials
-dbname = 'polpmmvo'
-user = 'polpmmvo'
+dbname = 'iagqhysc'
+user = 'iagqhysc'
 password = '' # Don't commit this!
 host = 'salt.db.elephantsql.com'
 
@@ -43,11 +43,22 @@ daynight VARCHAR(7),
 timestamp VARCHAR(50),
 month INT,
 week INT,
+temperature FLOAT,
+humidity FLOAT,
+windspeed FLOAT,
 fire INT
 );
 """
 
+# Drop table statement
+drop_training_table = """
+DROP TABLE training;
+"""
+
+
 # Execute table creation
+print('dropping old db')
+pg_curs.execute(drop_training_table)
 print('creating db')
 pg_curs.execute(create_training_table)
 

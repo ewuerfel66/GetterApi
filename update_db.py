@@ -21,8 +21,8 @@ labelled_df = label_fires(df)
 
 
 # Credentials
-dbname = 'polpmmvo'
-user = 'polpmmvo'
+dbname = 'iagqhysc'
+user = 'iagqhysc'
 password = '' # Don't commit this!
 host = 'salt.db.elephantsql.com'
 
